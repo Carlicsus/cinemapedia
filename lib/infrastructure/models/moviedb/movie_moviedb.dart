@@ -1,6 +1,4 @@
-// Clase que representa cómo vienen los datos de una película desde la API de MovieDB
 class MovieMovieDB {
-  // Constructor donde tenemos que pasar toda la info de la película
     MovieMovieDB({
         required this.adult,
         required this.backdropPath,
@@ -33,7 +31,6 @@ class MovieMovieDB {
     final double voteAverage;
     final int voteCount;
 
-  // Método que convierte un JSON de la API a MovieMovieDB
     factory MovieMovieDB.fromJson(Map<String, dynamic> json) => MovieMovieDB(
         adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? '',
@@ -44,25 +41,24 @@ class MovieMovieDB {
         overview: json["overview"] ?? '',
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"] ?? '',
-        releaseDate: DateTime.parse(json["release_date"]), //convierte la fecha de estreno de texto a formato
+        releaseDate: DateTime.parse(json["release_date"]),
         title: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
     );
 
-// Método que convierte el objeto MovieMovieDB de vuelta a JSON
     Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
-        "genre_ids": List<dynamic>.from(genreIds.map((x) => x)), //convierte los géneros de la película de un JSON a una lista 
+        "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
         "original_language": originalLanguage,
         "original_title": originalTitle,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
-        "release_date": "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}", //toma la fecha de Dart y la formatea para que sea entendible por otras apps o servicios que esperan "AAAA-MM-DD"
+        "release_date": "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
         "title": title,
         "video": video,
         "vote_average": voteAverage,

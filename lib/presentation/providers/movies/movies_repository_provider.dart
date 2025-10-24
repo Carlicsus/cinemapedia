@@ -1,8 +1,10 @@
-import 'package:cinemapedia_220526/infraestructure/datasources/moviedb_datasource.dart';
+import 'package:cinemapedia_220526/infrastructure/datasources/moviedb_datasource.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cinemapedia_220526/infraestructure/repositories/movie_repository_impl.dart';
+import 'package:cinemapedia_220526/infrastructure/repositories/movie_repository_impl.dart';
 
-// se expone un repositorio de películas, La idea es que la app pueda pedir películas desde cualquier parte
+// Este repositorio es inmutable
 final movieRepositoryProvider = Provider((ref) {
-  return MovieRepositoryImpl( MoviedbDatasource() ); // Creamos el repo con el datasource de MovieDB
+  return MovieRepositoryImpl( MoviedbDatasource() );
 });
+
+

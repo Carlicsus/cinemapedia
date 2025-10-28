@@ -11,8 +11,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: _HomeView(),
-    bottomNavigationBar: CustomBottomNavigationbar(),
+    return const Scaffold(
+      body: _HomeView(),
+      bottomNavigationBar: CustomBottomNavigationbar(),
     );
   }
 }
@@ -34,18 +35,50 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final nowPlaying = ref.watch(nowPlayingMoviesProvider);
+    final slideShowMovies = ref.watch(movieSlideShowProvider);
 
-    final nowPlaying=ref.watch(nowPlayingMoviesProvider);
-    final slideShowMovies =ref.watch(movieSlideShowProvider);
+    return CustomScrollView(
+      slivers: 
+      
+      Column(
+        children: [
+          CustomAppbar(),
+          MovieSlideshow(movies: slideShowMovies),
+          MovieHorizontalListview(
+            movies: nowPlaying,
+            title: 'En cines',
+            subtitle: 'Miercoles 22 de octubre',
+            loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontalListview(
+            movies: nowPlaying,
+            title: 'Proximamente',
+            subtitle: 'En este mes',
+            loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontalListview(
+            movies: nowPlaying,
+            title: 'Populares',
+            // subtitle: 'En este mes',
+            loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontalListview(
+            movies: nowPlaying,
+            title: 'Mejor Calificadas',
+            subtitle: 'Desde siempre',
+            loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontalListview(
+            movies: nowPlaying,
+            title: 'Mexicanas xd',
+            // subtitle: 'De todos ',
+            loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
 
-    return Column(
-      children: [
-        CustomAppbar(),
-        MovieSlideshow(movies: slideShowMovies),
-        MovieHorizontalListview(movies: nowPlaying,
-        title: 'En cimes',
-        subtitle: 'Miercoles 22 de octubre'),
-      ]
+          const SizedBox(height: 10,)
+        ],
+      ),
     );
   }
 }

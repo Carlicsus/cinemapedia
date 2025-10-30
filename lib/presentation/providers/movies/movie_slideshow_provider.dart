@@ -12,3 +12,4 @@ final movieSlideShowProvider = Provider<List<Movie>>((ref) {
 
   }
 });
+

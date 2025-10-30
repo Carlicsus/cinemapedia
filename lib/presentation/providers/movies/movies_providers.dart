@@ -1,31 +1,97 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:cinemapedia_220526/domain/entities/movie.dart';
+
 import 'package:cinemapedia_220526/presentation/providers/movies/movies_repository_provider.dart';
-import 'package:flutter_riverpod/legacy.dart'
-    show StateNotifierProvider, StateNotifier;
 
-final nowPlayingMoviesProvider =
-    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-      final fetchMoreMovies = ref.watch(movieRepositoryProvider).getNowPlaying;
-
-      return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
-    });
+// 🔹 Tipo de función para obtener películas
 
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
-class MoviesNotifier extends StateNotifier<List<Movie>> {
-  int currentPage = 0;
-  bool isLoading = false;
-  MovieCallback fetchMoreMovies;
+// 🔹 Provider para Now Playing
 
-  MoviesNotifier({required this.fetchMoreMovies}) : super([]);
+final nowPlayingMoviesProvider =
+
+    NotifierProvider<MoviesNotifier, List<Movie>>(
+
+  () => MoviesNotifier((ref) => ref.watch(movieRepositoryProvider).getNowPlaying),
+
+);
+
+// 🔹 Provider para Popular Movies
+
+final popularMoviesProvider =
+
+    NotifierProvider<MoviesNotifier, List<Movie>>(
+
+  () => MoviesNotifier((ref) => ref.watch(movieRepositoryProvider).getPopular),
+
+);
+
+final upComingMoviesProvider =
+
+    NotifierProvider<MoviesNotifier, List<Movie>>(
+
+  () => MoviesNotifier((ref) => ref.watch(movieRepositoryProvider).getUpComing),
+
+);
+
+final topRatedMoviesProvider =
+
+    NotifierProvider<MoviesNotifier, List<Movie>>(
+
+  () => MoviesNotifier((ref) => ref.watch(movieRepositoryProvider).getTopRated),
+
+);
+
+final mexicanMoviesProvider =
+
+    NotifierProvider<MoviesNotifier, List<Movie>>(
+
+  () => MoviesNotifier((ref) => ref.watch(movieRepositoryProvider).getMexicanMovies),
+
+);
+
+// 🔹 Notifier genérico que maneja cualquier tipo de lista de películas
+
+class MoviesNotifier extends Notifier<List<Movie>> {
+
+  final MovieCallback Function(Ref ref) _callbackBuilder;
+
+  late final MovieCallback fetchMoreMovies;
+
+  MoviesNotifier(this._callbackBuilder);
+
+  int currentPage = 0;
+
+  bool isLoading = false;
+
+  @override
+
+  List<Movie> build() {
+
+    fetchMoreMovies = _callbackBuilder(ref);
+
+    return [];
+
+  }
 
   Future<void> loadNextPage() async {
+
     if (isLoading) return;
+
     isLoading = true;
+
     currentPage++;
-    final List<Movie> movies = await fetchMoreMovies(page: currentPage);
+
+    final movies = await fetchMoreMovies(page: currentPage);
+
     state = [...state, ...movies];
+
     await Future.delayed(const Duration(milliseconds: 300));
+
     isLoading = false;
+
   }
+
 }
